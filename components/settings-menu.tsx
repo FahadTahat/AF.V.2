@@ -9,15 +9,10 @@ import {
     Contrast,
     Zap,
     BookOpen,
-    Volume2,
     Eye,
-    Moon,
-    Sun,
-    Monitor,
     Check,
     X,
     Cloud,
-    CloudOff,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -33,7 +28,6 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { useLanguage } from "@/contexts/LanguageContext"
-import { useTheme } from "next-themes"
 import { useAuth } from "@/contexts/AuthContext"
 import { doc, setDoc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
@@ -56,7 +50,6 @@ const DEFAULT_SETTINGS: UserSettings = {
 
 export function SettingsMenu() {
     const { language, setLanguage } = useLanguage()
-    const { theme, setTheme } = useTheme()
     const { user } = useAuth()
     const [mounted, setMounted] = useState(false)
     const [syncing, setSyncing] = useState(false)
@@ -196,12 +189,18 @@ export function SettingsMenu() {
     }, [fontSize, highContrast, reduceMotion, readingMode, dyslexiaFont, mounted, saveSettings])
 
     const resetSettings = async () => {
+        // Reset state
         setFontSize(DEFAULT_SETTINGS.fontSize)
         setHighContrast(DEFAULT_SETTINGS.highContrast)
         setReduceMotion(DEFAULT_SETTINGS.reduceMotion)
         setReadingMode(DEFAULT_SETTINGS.readingMode)
         setDyslexiaFont(DEFAULT_SETTINGS.dyslexiaFont)
 
+        // Apply immediately to DOM
+        document.documentElement.style.fontSize = `${DEFAULT_SETTINGS.fontSize}%`
+        document.documentElement.classList.remove("high-contrast", "reduce-motion", "reading-mode", "dyslexia-font")
+
+        // Clear localStorage
         localStorage.removeItem("fontSize")
         localStorage.removeItem("highContrast")
         localStorage.removeItem("reduceMotion")
@@ -306,51 +305,6 @@ export function SettingsMenu() {
                     </DropdownMenuGroup>
 
                     <DropdownMenuSeparator className="bg-white/10" />
-
-                    {/* Theme Settings */}
-                    <DropdownMenuGroup>
-                        <div className="px-2 py-2">
-                            <Label className="text-xs text-slate-400 uppercase font-semibold flex items-center gap-2 mb-2">
-                                {theme === "dark" ? <Moon className="w-3 h-3" /> : <Sun className="w-3 h-3" />}
-                                {language === "ar" ? "المظهر" : "Theme"}
-                            </Label>
-                            <div className="grid grid-cols-3 gap-2">
-                                <Button
-                                    variant={theme === "light" ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setTheme("light")}
-                                    className={`w-full ${theme === "light"
-                                        ? "bg-primary hover:bg-primary/90"
-                                        : "bg-white/5 hover:bg-white/10 border-white/10"
-                                        }`}
-                                >
-                                    <Sun className="w-3 h-3" />
-                                </Button>
-                                <Button
-                                    variant={theme === "dark" ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setTheme("dark")}
-                                    className={`w-full ${theme === "dark"
-                                        ? "bg-primary hover:bg-primary/90"
-                                        : "bg-white/5 hover:bg-white/10 border-white/10"
-                                        }`}
-                                >
-                                    <Moon className="w-3 h-3" />
-                                </Button>
-                                <Button
-                                    variant={theme === "system" ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setTheme("system")}
-                                    className={`w-full ${theme === "system"
-                                        ? "bg-primary hover:bg-primary/90"
-                                        : "bg-white/5 hover:bg-white/10 border-white/10"
-                                        }`}
-                                >
-                                    <Monitor className="w-3 h-3" />
-                                </Button>
-                            </div>
-                        </div>
-                    </DropdownMenuGroup>
 
                     <DropdownMenuSeparator className="bg-white/10" />
 
