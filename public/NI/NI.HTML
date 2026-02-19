@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستقبلي ذكي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/vfs_fonts.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Roboto:wght@400;700&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <link rel="stylesheet" href="NI.CSS">
+</head>
+
+<body class="min-h-screen pt-20 pb-12 px-4 selection:bg-indigo-500 selection:text-white">
+    <div class="max-w-4xl mx-auto flex flex-col items-center justify-start min-h-[calc(100vh-5rem)]">
+        <!-- Unified Navigation Bar -->
+        <!-- Unified Navigation Bar Removed for Iframe Integration -->
+        <!-- Intro Screen -->
+        <div id="intro-screen" class="flex flex-col items-center justify-center min-h-[80vh] w-full">
+            <div id="particles-js"></div>
+            <div class="intro-panel p-8 md:p-12 w-full max-w-2xl text-center animate-slide-up relative z-10">
+                <h1 id="intro-title" class="text-4xl md:text-6xl font-black mb-6 text-gradient-primary tracking-tight">
+                    مستقبلي ذكي</h1>
+                <p id="intro-description" class="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed font-light">
+                    مرحبًا! هذا التطبيق سيساعدك في تخطيط حياتك الدراسية واليومية. <br>
+                    ستختار اللغة، تكتب اسمك، تجيب على أسئلة بسيطة، ثم تحصل على خطة مخصصة لك.
+                </p>
+                <div class="bg-white/5 rounded-xl p-4 mb-8 border border-white/10 backdrop-blur-sm">
+                    <p id="motivationalQuote" class="text-center text-indigo-200 italic font-medium"></p>
+                </div>
+
+                <div id="intro-controls" class="w-full max-w-md mx-auto space-y-6">
+                    <!-- Language Selection -->
+                    <div id="language-step" class="step space-y-4">
+                        <label for="intro-language" class="block text-gray-400 font-medium mb-2">حدد لغتك / Select
+                            Language</label>
+                        <select id="intro-language"
+                            class="w-full bg-slate-800/80 border border-indigo-500/30 text-white py-3 px-4 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                            aria-label="Select Language">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                        <button id="language-next"
+                            class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-indigo-500/30 transition-all transform hover:-translate-y-1 block mt-4"
+                            aria-label="التالي">
+                            البدء / Start
+                            <span class="inline-block mr-2">→</span>
+                        </button>
+                    </div>
+
+                    <!-- Name Input -->
+                    <div id="name-step" class="step hidden space-y-4 animate-slide-up">
+                        <label for="user-name" class="block text-gray-400 font-medium mb-2">ما هو اسمك؟</label>
+                        <input id="user-name" type="text"
+                            class="w-full bg-slate-800/80 border border-indigo-500/30 text-white py-3 px-4 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-center text-lg"
+                            placeholder="اكتب اسمك هنا..." aria-label="Enter your name">
+                        <button id="name-next"
+                            class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-indigo-500/30 transition-all transform hover:-translate-y-1 block mt-4"
+                            aria-label="التالي">التالي</button>
+                    </div>
+
+                    <!-- Agreement -->
+                    <div id="agreement-step" class="step hidden space-y-6 animate-slide-up">
+                        <div class="bg-indigo-900/20 border border-indigo-500/20 p-6 rounded-2xl">
+                            <h3 class="text-xl font-bold text-white mb-2">اتفاقية الاستخدام</h3>
+                            <p class="text-sm text-gray-400 mb-4">باستخدامك لهذا التطبيق، أنت توافق على تقديم معلومات
+                                صحيحة لنتمكن من مساعدتك بأفضل شكل.</p>
+                            <label for="intro-agree" class="block text-white font-semibold mb-4">هل أنت مستعد؟</label>
+                            <button id="intro-agree"
+                                class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-emerald-500/30 transition-all transform hover:-translate-y-1"
+                                aria-label="موافق">نعم، أنا مستعد</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="app" class="glass-panel rounded-3xl p-8 w-full max-w-5xl hidden animate-slide-up relative mt-8 mb-12">
+            <!-- Header Controls -->
+            <div class="flex justify-between items-center mb-8 border-b border-white/5 pb-6">
+                <div class="flex items-center gap-4">
+                    <img src="re-removebg-preview.png" alt="Logo" class="w-12 h-12 rounded-lg bg-white/5 p-2">
+                    <span class="font-bold text-xl text-white hidden sm:block">مستقبلي ذكي</span>
+                </div>
+                <button id="settingsButton"
+                    class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-lg transition-colors text-sm font-medium text-gray-300">
+                    <span>⚙️</span>
+                    <span>الإعدادات</span>
+                </button>
+            </div>
+
+            <!-- Settings Panel -->
+            <div id="settingsPanel" class="settings-panel">
+                <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+                    <h2 class="text-2xl font-bold text-white">الإعدادات</h2>
+                    <span id="backArrow"
+                        class="text-gray-400 hover:text-white cursor-pointer text-2xl transition-colors" role="button"
+                        aria-label="أغلق">✕</span>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="space-y-2">
+                        <label for="languageToggle" class="text-sm font-medium text-gray-400">اللغة / Language</label>
+                        <select id="languageToggle"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="themeToggle" class="text-sm font-medium text-gray-400">المظهر</label>
+                        <select id="themeToggle"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+                            <option value="dark">الوضع الداكن (Dark)</option>
+                            <option value="light">الوضع الفاتح (Light)</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-400">حجم الخط</label>
+                        <div class="flex gap-2">
+                            <button id="decreaseFont"
+                                class="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-2 rounded-lg transition-colors border border-slate-700">A-</button>
+                            <button id="increaseFont"
+                                class="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-2 rounded-lg transition-colors border border-slate-700">A+</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="volumeSlider" class="text-sm font-medium text-gray-400">مستوى الصوت</label>
+                        <input id="volumeSlider" type="range" min="0" max="1" step="0.1" value="0.3"
+                            class="w-full accent-indigo-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div class="flex items-center justify-between py-2">
+                        <label for="musicToggle" class="text-sm font-medium text-gray-400">الموسيقى الخلفية</label>
+                        <input id="musicToggle" type="checkbox"
+                            class="w-5 h-5 accent-indigo-500 rounded cursor-pointer">
+                    </div>
+                </div>
+
+                <div class="developer-info mt-auto pt-8 border-t border-white/10 text-center space-y-2">
+                    <h3 class="font-bold text-white mb-2">تواصل معنا</h3>
+                    <p class="text-xs text-gray-400 font-mono">+962 78 064 8871</p>
+                    <p class="text-xs text-gray-400 font-mono">butcahmad@gmail.com</p>
+                    <p class="text-xs text-gray-400 font-mono">IG: 4if_01</p>
+                    <p class="text-[10px] text-gray-500 mt-4">© 2026 AF BTEC. All Rights Reserved</p>
+                </div>
+            </div>
+
+            <!-- Questionnaire Section -->
+            <div id="questionnaire" class="space-y-8 animate-fade-in relative">
+                <div class="text-center space-y-2 mb-8">
+                    <h1 id="siteTitle"
+                        class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                        تحليل نمط الحياة</h1>
+                    <p id="introText" class="text-gray-400 text-sm md:text-base">خطوة بخطوة نحو مستقبل أفضل</p>
+                </div>
+
+                <div class="relative pt-4">
+                    <div id="progressBarContainer" class="progress-container"></div>
+                </div>
+
+                <div id="questionContainer" class="min-h-[300px] flex flex-col justify-center">
+                    <!-- Questions injected here -->
+                </div>
+
+                <div class="flex justify-between items-center gap-4 pt-6 border-t border-white/5">
+                    <button id="prevQuestion" class="nav-btn secondary flex-1 sm:flex-none" disabled>
+                        السابق
+                    </button>
+                    <button id="nextQuestion" class="nav-btn flex-1 sm:flex-none min-w-[120px]" disabled>
+                        التالي
+                    </button>
+                </div>
+
+                <!-- Loading Overlay -->
+                <div id="loadingSpinner"
+                    class="hidden absolute inset-0 bg-[#0f172a]/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center rounded-3xl">
+                    <div class="relative w-24 h-24 mb-8">
+                        <div class="absolute inset-0 border-4 border-indigo-500/30 rounded-full"></div>
+                        <div
+                            class="absolute inset-0 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin">
+                        </div>
+                    </div>
+                    <p class="text-xl font-bold text-white animate-pulse">جاري تحليل البيانات...</p>
+                    <p class="text-sm text-indigo-300 mt-2">نصنع لك خطة مثالية</p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="hidden space-y-10 animate-fade-in">
+                <div class="text-center mb-10">
+                    <h2 id="resultsTitle"
+                        class="text-4xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 leading-tight p-2">
+                        نتائج التحليل وخطة التحسين</h2>
+                    <p class="text-gray-400">بناءً على إجاباتك، إليك خطتك الشخصية</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Academic Prediction -->
+                    <div
+                        class="glass-panel rounded-2xl p-6 md:col-span-2 border-l-4 border-l-indigo-500 hover:bg-white/[0.02] transition-colors">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-2xl">📊</span> التقييم الأكاديمي
+                        </h3>
+                        <div id="academicPrediction" class="text-gray-300 leading-relaxed"></div>
+                    </div>
+
+                    <!-- Diet Plan -->
+                    <div
+                        class="glass-panel rounded-2xl p-6 md:col-span-2 border-l-4 border-l-emerald-500 hover:bg-white/[0.02] transition-colors">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-2xl">🥗</span> النظام الغذائي
+                        </h3>
+                        <div id="dietPlan" class="text-gray-300 leading-relaxed"></div>
+                    </div>
+
+                    <!-- Daily Schedule -->
+                    <div
+                        class="glass-panel rounded-2xl p-6 md:col-span-2 border-l-4 border-l-blue-500 hover:bg-white/[0.02] transition-colors">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-2xl">📅</span> الجدول اليومي المقترح
+                        </h3>
+                        <div id="dailySchedule" class="overflow-x-auto"></div>
+                    </div>
+
+                    <!-- Prayer Schedule -->
+                    <div
+                        class="glass-panel rounded-2xl p-6 md:col-span-2 border-l-4 border-l-amber-500 hover:bg-white/[0.02] transition-colors">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span class="text-2xl">🕌</span> مواقيت الصلاة (التقريبية)
+                        </h3>
+                        <div id="prayerSchedule" class="overflow-x-auto"></div>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div
+                    class="glass-panel rounded-2xl p-8 border border-white/10 bg-gradient-to-br from-white/5 to-transparent">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div id="studyTimer" class="w-full md:w-auto text-center md:text-right">
+                            <h3 class="font-bold text-white text-lg mb-2">⏱️ مؤقت التركيز (Pomodoro)</h3>
+                            <p class="text-sm text-gray-400 mb-4">استخدم تقنية البومودورو لزيادة الإنتاجية</p>
+                            <div class="flex items-center justify-center md:justify-start gap-4">
+                                <span id="timerDisplay"
+                                    class="text-4xl font-mono font-bold text-white bg-black/30 px-6 py-2 rounded-xl border border-white/10 shadow-inner">25:00</span>
+                                <div class="flex gap-2">
+                                    <button id="startTimer"
+                                        class="bg-emerald-600 hover:bg-emerald-500 text-white p-3 rounded-lg transition-all shadow-lg hover:shadow-emerald-500/20"
+                                        aria-label="Start">▶</button>
+                                    <button id="resetTimer"
+                                        class="bg-rose-600 hover:bg-rose-500 text-white p-3 rounded-lg transition-all shadow-lg hover:shadow-rose-500/20"
+                                        aria-label="Reset">↺</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="w-full md:w-auto flex flex-col gap-3">
+                            <button id="exportPDF"
+                                class="flex items-center justify-center gap-3 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg hover:shadow-indigo-500/30 transform hover:-translate-y-1">
+                                <span>📄</span>
+                                <span>تصدير الخطة كـ PDF</span>
+                            </button>
+                            <div class="flex gap-3">
+                                <button id="backToQuestions"
+                                    class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 px-4 rounded-xl transition-colors">تعديل
+                                    الإجابات</button>
+                                <button id="restart"
+                                    class="flex-1 bg-slate-700 hover:bg-rose-600 text-white py-3 px-4 rounded-xl transition-colors">بدء
+                                    جديد</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+
+
+            // Audio initialization (muted since files are unavailable)
+            const answerSound = new Audio("sound_effects/mixkit-interface-device-click-2577.MP3");
+            const navSound = new Audio("sound_effects/sound efff.mp3");
+            const settingsSound = new Audio("sound_effects/ddrn.MP3");
+            const backgroundMusic = new Audio("sound_effects/dd.MP3");
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.3;
+
+
+            // Cursor Logic
+            const cursor = document.createElement('div');
+            cursor.className = 'custom-cursor';
+            document.body.appendChild(cursor);
+
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            document.querySelectorAll('a, button, .answer-box, input, select').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+
+
+
+            // Initialize Particles.js
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: ['#3b82f6', '#ec4899'] },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 4, random: true },
+                    line_linked: { enable: false },
+                    move: { enable: true, speed: 2, direction: 'none', random: true, straight: false, out_mode: 'out', bounce: false }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: { onhover: { enable: true, mode: 'bubble' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                    modes: { bubble: { distance: 200, size: 6, duration: 2, opacity: 0.8 }, push: { particles_nb: 4 } }
+                },
+                retina_detect: true
+            });
+
+            // Settings Panel Toggle
+            const settingsButton = document.getElementById('settingsButton');
+            const settingsPanel = document.getElementById('settingsPanel');
+            const backArrow = document.getElementById('backArrow');
+            settingsButton.addEventListener('click', () => {
+                settingsPanel.classList.toggle('open');
+                settingsSound.play().catch(() => { });
+            });
+            backArrow.addEventListener('click', () => {
+                settingsPanel.classList.remove('open');
+                settingsSound.play().catch(() => { });
+            });
+
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('change', (e) => {
+                document.body.classList.toggle('light-mode', e.target.value === 'light');
+            });
+
+            // Volume and Music Controls
+            const volumeSlider = document.getElementById('volumeSlider');
+            const musicToggle = document.getElementById('musicToggle');
+            volumeSlider.addEventListener('input', () => {
+                answerSound.volume = volumeSlider.value;
+                navSound.volume = volumeSlider.value;
+                settingsSound.volume = volumeSlider.value;
+                backgroundMusic.volume = volumeSlider.value;
+            });
+            musicToggle.addEventListener('change', () => {
+                if (musicToggle.checked) {
+                    backgroundMusic.play().catch(() => { });
+                } else {
+                    backgroundMusic.pause();
+                }
+            });
+            // Font Size Controls
+            const increaseFont = document.getElementById('increaseFont');
+            const decreaseFont = document.getElementById('decreaseFont');
+            increaseFont.addEventListener('click', () => adjustFontSize(true));
+            decreaseFont.addEventListener('click', () => adjustFontSize(false));
+
+            // Language Toggle
+            const languageToggle = document.getElementById('languageToggle');
+            languageToggle.addEventListener('change', (e) => switchLanguage(e.target.value));
+
+            // Translations Object
+            const translations = {
+                ar: {
+                    title: 'مستقبلي ذكي',
+                    intro: 'أجب على الأسئلة للحصول على خطة دراسية ومعيشية مخصصة',
+                    introDescription: 'مرحبًا! هذا التطبيق سيساعدك في تخطيط حياتك الدراسية واليومية. ستختار اللغة، تكتب اسمك، تجيب على أسئلة بسيطة، ثم تحصل على خطة مخصصة لك.',
+                    resultsTitle: 'نتائج التحليل وخطة التحسين',
+                    prev: 'السابق',
+                    next: 'التالي',
+                    agree: 'موافق',
+                    restart: 'إعادة البدء',
+                    settings: 'الإعدادات',
+                    language: 'اللغة',
+                    selectLanguage: 'حدد لغتك:',
+                    enterName: 'اكتب اسمك:',
+                    confirmAgreement: 'أثبت موافقتك:',
+                    developerInfo: {
+                        title: 'عن المطور',
+                        name: 'الاسم: فهد الطاهات',
+                        email: 'البريد: butcahmad@gmail.com',
+                        version: 'نسخة التطبيق: 1.0.0',
+                        instagram: 'الأنستقرام: 4if_01'
+                    },
+                    toastMessages: {
+                        nameRequired: 'يرجى إدخال اسمك!',
+                        answerSaved: 'تم حفظ الإجابة!',
+                        restartSuccess: 'تمت إعادة التشغيل بنجاح!',
+                        returnToQuestions: 'تم العودة إلى الأسئلة!',
+                        exportSuccess: 'تم تصدير الخطة بنجاح!',
+                        timerFinished: 'انتهى وقت الدراسة! خذ استراحة.',
+                        invalidInput: 'الرجاء إدخال قيمة صحيحة'
+                    },
+                    loading: 'جاري تحليل إجاباتك وإعداد الخطة...',
+                    timer: {
+                        title: 'مؤقت الدراسة:',
+                        start: 'بدء',
+                        reset: 'إعادة تعيين'
+                    },
+                    back: 'رجوع',
+                    exportPDF: 'تصدير كـ PDF',
+                    questions: [
+                        { id: 'studentType', text: 'ما هو مسارك الحالي؟', type: 'select', options: ['طالب توجيهي TAWJIHI', 'نمط حياة عام GENERAL'] },
+                        { id: 'gender', text: 'الجنس (لتخصيص الثيم):', type: 'select', options: ['ذكر MALE', 'أنثى FEMALE'] },
+                        // General Questions
+                        { id: 'age', text: 'كم عمرك؟', type: 'number', min: 0, max: 120, category: 'general' },
+                        { id: 'height', text: 'كم طولك (بالسنتيمتر)؟', type: 'number', min: 0, max: 250, category: 'general' },
+                        { id: 'weight', text: 'كم وزنك (بالكيلوغرام)؟', type: 'number', min: 0, max: 300, category: 'general' },
+                        { id: 'sleepQuality', text: 'كيف تصف جودة نومك؟', type: 'select', options: ['ممتاز TEMAZ', 'جيد GOOD', 'سيئ BAD'], category: 'general' },
+                        { id: 'dietFollowed', text: 'هل تتبع نظامًا غذائيًا محددًا؟', type: 'select', options: ['نعم YES', 'لا NO'], category: 'general' },
+                        { id: 'bodyGoal', text: 'ما هو هدفك البدني؟', type: 'select', options: ['تضخيم BULKING', 'تنشيف CUTTING', 'لا يوجد NONE'], category: 'general' },
+                        { id: 'mood', text: 'كيف تصف مزاجك العام؟', type: 'select', options: ['إيجابي POSITIVE', 'محايد NEUTRAL', 'سلبي NEGATIVE'], category: 'general' },
+                        { id: 'religion', text: 'ما هو دينك؟', type: 'select', options: ['مسلم MUSLIM', 'مسيحي CHRISTIAN', 'آخر OTHER'] },
+                        { id: 'examPeriod', text: 'هل أنت في فترة امتحانات حاليًا؟', type: 'select', options: ['نعم YES', 'لا NO'], category: 'general' },
+                        { id: 'sleepHours', text: 'كم ساعة تنام يوميًا؟', type: 'number', min: 0, max: 24 },
+                        { id: 'mealsPerDay', text: 'كم وجبة تأكل يوميًا؟', type: 'number', min: 0, max: 10, category: 'general' },
+                        { id: 'studyHours', text: 'كم ساعة تدرس يوميًا؟', type: 'number', min: 0, max: 24 },
+                        { id: 'budget', text: 'ما هو ميزانيتك الشهرية للطعام (بالدينار)؟', type: 'number', min: 0, category: 'general' },
+                        { id: 'academicGoal', text: 'ما هو هدفك الأكاديمي؟', type: 'text', category: 'general' },
+                        { id: 'scheduleTitle', text: 'اختر عنواناً محفزاً لجدولك (مثال: "طريقي للنجاح"):', type: 'text' },
+                        // Tawjihi Questions
+                        { id: 'historyLevel', text: 'قيم مستواك في تاريخ الأردن (1-10):', type: 'range', min: 1, max: 10, category: 'tawjihi' },
+                        { id: 'arabicLevel', text: 'قيم مستواك في اللغة العربية (1-10):', type: 'range', min: 1, max: 10, category: 'tawjihi' },
+                        { id: 'religionLevel', text: 'قيم مستواك في التربية الإسلامية (1-10):', type: 'range', min: 1, max: 10, category: 'tawjihi' },
+                        { id: 'englishLevel', text: 'قيم مستواك في اللغة الإنجليزية (1-10):', type: 'range', min: 1, max: 10, category: 'tawjihi' },
+                        { id: 'tawjihiStream', text: 'ما هو تخصصك؟', type: 'select', options: ['علمي SCIENTIFIC', 'أدبي LITERARY', 'صناعي INDUSTRIAL'], category: 'tawjihi' }
+                    ]
+                },
+                en: {
+                    title: 'My Future is Smart',
+                    intro: 'Answer the questions to get a personalized study and lifestyle plan',
+                    introDescription: 'Hello! This app will help you plan your academic and daily life. You will choose the language, write your name, answer simple questions, and then get a customized plan.',
+                    resultsTitle: 'Analysis Results and Improvement Plan',
+                    prev: 'Previous',
+                    next: 'Next',
+                    agree: 'Agree',
+                    restart: 'Restart',
+                    settings: 'Settings',
+                    language: 'Language',
+                    selectLanguage: 'Select your language:',
+                    enterName: 'Enter your name:',
+                    confirmAgreement: 'Confirm your agreement:',
+                    developerInfo: {
+                        title: 'About the Developer',
+                        name: 'Name: Fahad Tahat',
+                        email: 'Email: butcahmad@gmail.com',
+                        version: 'App Version: 1.0.0',
+                        instagram: 'Instagram: 4if_01'
+                    },
+                    toastMessages: {
+                        nameRequired: 'Please enter your name!',
+                        answerSaved: 'Answer saved!',
+                        restartSuccess: 'Restarted successfully!',
+                        returnToQuestions: 'Returned to questions!',
+                        exportSuccess: 'Plan exported successfully!',
+                        timerFinished: 'Study time is up! Take a break.',
+                        invalidInput: 'Please enter a valid value'
+                    },
+                    loading: 'Analyzing your answers and preparing the plan...',
+                    timer: {
+                        title: 'Study Timer:',
+                        start: 'Start',
+                        reset: 'Reset'
+                    },
+                    back: 'Back',
+                    exportPDF: 'Export as PDF',
+                    questions: [
+                        { id: 'studentType', text: 'What is your current path?', type: 'select', options: ['Tawjihi Student TAWJIHI', 'General Lifestyle GENERAL'] },
+                        { id: 'gender', text: 'Gender (for theme customization):', type: 'select', options: ['Male MALE', 'Female FEMALE'] },
+                        // General Questions
+                        { id: 'age', text: 'How old are you?', type: 'number', min: 0, max: 120, category: 'general' },
+                        { id: 'height', text: 'What is your height (in cm)?', type: 'number', min: 0, max: 250, category: 'general' },
+                        { id: 'weight', text: 'What is your weight (in kg)?', type: 'number', min: 0, max: 300, category: 'general' },
+                        { id: 'sleepQuality', text: 'How would you describe your sleep quality?', type: 'select', options: ['Excellent TEMAZ', 'Good GOOD', 'Poor BAD'], category: 'general' },
+                        { id: 'dietFollowed', text: 'Do you follow a specific diet?', type: 'select', options: ['Yes YES', 'No NO'], category: 'general' },
+                        { id: 'bodyGoal', text: 'What is your fitness goal?', type: 'select', options: ['Bulking BULKING', 'Cutting CUTTING', 'None NONE'], category: 'general' },
+                        { id: 'mood', text: 'How would you describe your general mood?', type: 'select', options: ['Positive POSITIVE', 'Neutral NEUTRAL', 'Negative NEGATIVE'], category: 'general' },
+                        { id: 'religion', text: 'What is your religion?', type: 'select', options: ['Muslim MUSLIM', 'Christian CHRISTIAN', 'Other OTHER'] },
+                        { id: 'examPeriod', text: 'Are you currently in an exam period?', type: 'select', options: ['Yes YES', 'No NO'], category: 'general' },
+                        { id: 'sleepHours', text: 'How many hours do you sleep daily?', type: 'number', min: 0, max: 24 },
+                        { id: 'mealsPerDay', text: 'How many meals do you eat daily?', type: 'number', min: 0, max: 10, category: 'general' },
+                        { id: 'studyHours', text: 'How many hours do you study daily?', type: 'number', min: 0, max: 24 },
+                        { id: 'budget', text: 'What is your monthly food budget (in dinars)?', type: 'number', min: 0, category: 'general' },
+                        { id: 'academicGoal', text: 'What is your academic goal?', type: 'text', category: 'general' },
+                        { id: 'scheduleTitle', text: 'Choose a motivational title for your schedule (e.g., "My Path to Success"):', type: 'text' },
+                        // Tawjihi Questions
+                        { id: 'historyLevel', text: 'Rate your level in History of Jordan (1-10):', type: 'range', min: 1, max: 10, category: 'tawjihi' },
+                        { id: 'arabicLevel', text: 'Rate your level in Arabic (1-10):', type: 'range', min: 1, max: 10, category: 'tawjihi' },
+                        { id: 'religionLevel', text: 'Rate your level in Islamic Education (1-10):', type: 'range', min: 1, max: 10, category: 'tawjihi' },
+                        { id: 'englishLevel', text: 'Rate your level in English (1-10):', type: 'range', min: 1, max: 10, category: 'tawjihi' },
+                        { id: 'tawjihiStream', text: 'What is your stream?', type: 'select', options: ['Scientific SCIENTIFIC', 'Literary LITERARY', 'Industrial INDUSTRIAL'], category: 'tawjihi' }
+                    ]
+                }
+            };
+
+            const motivationalQuotes = {
+                ar: [
+                    "كل يوم هو فرصة جديدة لتحقيق أحلامك!",
+                    "النجاح هو مجموع جهود صغيرة تتكرر يوميًا.",
+                    "لا تتوقف عن السعي، فالقمة تنتظرك!"
+                ],
+                en: [
+                    "Every day is a new opportunity to achieve your dreams!",
+                    "Success is the sum of small efforts repeated daily.",
+                    "Keep pushing forward, the top awaits you!"
+                ]
+            };
+
+            let currentLang = 'ar';
+            let currentQuestionIndex = 0;
+            let answers = {};
+            let userName = '';
+
+            // Load saved answers
+            const savedAnswers = localStorage.getItem('userAnswers');
+            if (savedAnswers) answers = JSON.parse(savedAnswers);
+
+            // Intro Screen Logic
+            const introScreen = document.getElementById('intro-screen');
+            const introLanguage = document.getElementById('intro-language');
+            const languageNext = document.getElementById('language-next');
+            const languageStep = document.getElementById('language-step');
+            const nameStep = document.getElementById('name-step');
+            const userNameInput = document.getElementById('user-name');
+            const nameNext = document.getElementById('name-next');
+            const agreementStep = document.getElementById('agreement-step');
+            const introAgree = document.getElementById('intro-agree');
+            const app = document.getElementById('app');
+
+            // Display motivational quote
+            const randomQuote = motivationalQuotes[currentLang][Math.floor(Math.random() * motivationalQuotes[currentLang].length)];
+            document.getElementById('motivationalQuote').textContent = randomQuote;
+
+            introLanguage.addEventListener('change', (e) => {
+                currentLang = e.target.value;
+                switchLanguage(currentLang, true);
+            });
+
+            languageNext.addEventListener('click', () => {
+                languageStep.classList.add('hidden');
+                nameStep.classList.remove('hidden');
+            });
+
+            nameNext.addEventListener('click', () => {
+                userName = userNameInput.value.trim();
+                if (!userName) {
+                    showToast('nameRequired');
+                    return;
+                }
+                nameStep.classList.add('hidden');
+                agreementStep.classList.remove('hidden');
+            });
+
+            introAgree.addEventListener('click', () => {
+                introScreen.classList.add('hidden');
+                app.classList.remove('hidden');
+                app.classList.add('fade-in');
+                renderQuestion();
+            });
+
+            // Show Toast Notification
+            function showToast(messageKey) {
+                Toastify({
+                    text: translations[currentLang].toastMessages[messageKey],
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#4CAF50",
+                    className: "toast-notification"
+                }).showToast();
+            }
+
+            // Render Progress Bar
+            function renderProgressBar() {
+                const questions = getFilteredQuestions();
+                const container = document.getElementById('progressBarContainer');
+                container.innerHTML = questions.map((_, index) => `
+                <div class="progress-bar ${index <= currentQuestionIndex && answers[questions[index].id] ? 'completed' : ''}"></div>
+            `).join('');
+            }
+
+            // Get Questions based on Student Type
+            function getFilteredQuestions() {
+                const allQuestions = translations[currentLang].questions;
+                const studentType = answers['studentType'];
+
+                if (!studentType) return [allQuestions[0]]; // Only show first question if not answered
+
+                const isTawjihi = studentType.includes('TAWJIHI');
+
+                return allQuestions.filter(q => {
+                    // Common questions always shown
+                    if (q.id === 'studentType' || q.id === 'gender') return true;
+
+                    if (isTawjihi) {
+                        // Tawjihi sees BOTH 'tawjihi' AND 'general' questions
+                        // We want them to answer everything to get the diet/prayer plan too.
+                        return q.category === 'tawjihi' || q.category === 'general';
+                    } else {
+                        // General sees general questions ONLY
+                        return q.category === 'general';
+                    }
+                });
+            }
+
+            // Render Current Question
+            function renderQuestion() {
+                const questions = getFilteredQuestions();
+
+                // Safety check for index
+                if (currentQuestionIndex >= questions.length) {
+                    currentQuestionIndex = questions.length - 1;
+                }
+
+                const question = questions[currentQuestionIndex];
+                const container = document.getElementById('questionContainer');
+                const selectedAnswer = answers[question.id] || '';
+
+                // Range slider specific HTML
+                const rangeHTML = `
+                    <div class="space-y-4">
+                        <input 
+                            type="range" 
+                            id="${question.id}" 
+                            min="${question.min}" 
+                            max="${question.max}" 
+                            value="${selectedAnswer || Math.ceil((question.max - question.min) / 2)}" 
+                            class="w-full accent-indigo-500 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                        >
+                        <div class="text-center text-2xl font-bold text-indigo-400">
+                            <span id="rangeValue-${question.id}">${selectedAnswer || Math.ceil((question.max - question.min) / 2)}</span>
+                        </div>
+                    </div>
+                `;
+
+                container.innerHTML = `
+                <div class="question-card p-6 rounded-lg animate-fade-in">
+                    <label class="block text-white font-medium mb-4 text-xl" for="${question.id}">${question.text}</label>
+                    ${question.type === 'select' ? `
+                        <div class="answer-grid">
+                            ${question.options.map(opt => `
+                                <div 
+                                    class="answer-box ${selectedAnswer === opt ? 'selected' : ''}" 
+                                    data-value="${opt}"
+                                    data-question-id="${question.id}"
+                                >
+                                    ${opt}
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : question.type === 'range' ? rangeHTML : question.type === 'number' ? `
+                        <input 
+                            type="number" 
+                            id="${question.id}" 
+                            class="w-full p-4 rounded-xl text-white bg-slate-800 border-2 border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all outline-none text-xl" 
+                            min="${question.min || 0}" 
+                            max="${question.max || ''}" 
+                            value="${selectedAnswer}"
+                            required 
+                            aria-required="true"
+                        >
+                    ` : `
+                        <input 
+                            type="text" 
+                            id="${question.id}" 
+                            class="w-full p-4 rounded-xl text-white bg-slate-800 border-2 border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all outline-none text-xl" 
+                            value="${selectedAnswer}"
+                            required 
+                            aria-required="true"
+                        >
+                    `}
+                </div>
+            `;
+
+                if (question.type === 'select') {
+                    document.querySelectorAll('.answer-box').forEach(box => {
+                        box.addEventListener('click', () => {
+                            selectAnswer(box.dataset.questionId, box.dataset.value);
+                            showToast('answerSaved');
+                            // Auto advance if studentType is selected to refresh list
+                            if (question.id === 'studentType') {
+                                setTimeout(() => {
+                                    // Reset index if switching paths might cause out of bounds (though handled in getFiltered)
+                                    // currentQuestionIndex = 0; 
+                                    // Actually just render again to update filters
+                                    renderQuestion();
+                                }, 100);
+                            }
+                        });
+                    });
+                } else if (question.type === 'range') {
+                    const input = document.getElementById(question.id);
+                    const display = document.getElementById(`rangeValue-${question.id}`);
+                    input.addEventListener('input', (e) => {
+                        display.textContent = e.target.value;
+                        collectAnswer(false);
+                        validateInput();
+                    });
+                    // Auto-collect default if not set
+                    if (!answers[question.id]) {
+                        answers[question.id] = input.value;
+                        localStorage.setItem('userAnswers', JSON.stringify(answers));
+                    }
+                } else {
+                    const input = document.getElementById(question.id);
+                    input.addEventListener('input', () => {
+                        collectAnswer(false);
+                        validateInput();
+                    });
+                }
+
+                renderProgressBar();
+                validateInput();
+                updateNavigation();
+            }
+
+            // Select Answer for Multiple Choice Questions
+            function selectAnswer(questionId, value) {
+                answers[questionId] = value;
+                localStorage.setItem('userAnswers', JSON.stringify(answers));
+                const answerBoxes = document.querySelectorAll(`.answer-box[data-question-id="${questionId}"]`);
+                answerBoxes.forEach(box => {
+                    box.classList.toggle('selected', box.dataset.value === value);
+                });
+                renderProgressBar();
+                validateInput();
+            }
+
+            // Validate Input to Enable/Disable Next Button
+            function validateInput() {
+                const questions = getFilteredQuestions();
+                const question = questions[currentQuestionIndex];
+                const nextButton = document.getElementById('nextQuestion');
+                let isValid = true;
+
+                if (question.type === 'select') {
+                    isValid = !!answers[question.id];
+                } else if (question.type === 'range') {
+                    isValid = true; // Always valid as it has default
+                } else {
+                    const input = document.getElementById(question.id);
+                    const value = input.value.trim();
+                    if (value === '') {
+                        isValid = false;
+                    } else if (question.type === 'number') {
+                        const numValue = parseFloat(value);
+                        if (isNaN(numValue) || numValue < (question.min || 0) || (question.max && numValue > question.max)) {
+                            isValid = false;
+                            showToast('invalidInput');
+                        }
+                    }
+                }
+
+                nextButton.disabled = !isValid;
+            }
+
+            // Collect Answer from Input Fields
+            function collectAnswer(showNotification = false) {
+                const questions = getFilteredQuestions();
+                const question = questions[currentQuestionIndex];
+                if (question.type !== 'select') {
+                    const input = document.getElementById(question.id);
+                    const value = input.value.trim();
+                    if (value !== '') {
+                        answers[question.id] = value;
+                        localStorage.setItem('userAnswers', JSON.stringify(answers));
+                        if (showNotification) showToast('answerSaved');
+                    } else {
+                        delete answers[question.id];
+                        localStorage.setItem('userAnswers', JSON.stringify(answers));
+                    }
+                }
+            }
+
+            // Update Navigation Buttons State
+            function updateNavigation() {
+                const questions = getFilteredQuestions();
+                const prevButton = document.getElementById('prevQuestion');
+                const nextButton = document.getElementById('nextQuestion');
+                prevButton.disabled = currentQuestionIndex === 0;
+                nextButton.textContent = currentQuestionIndex === questions.length - 1 ? (currentLang === 'ar' ? 'إرسال' : 'Submit') : translations[currentLang].next;
+                validateInput();
+            }
+
+            // Navigation Buttons Logic
+            document.getElementById('prevQuestion').addEventListener('click', () => {
+                collectAnswer();
+                currentQuestionIndex--;
+                renderQuestion();
+            });
+
+            document.getElementById('nextQuestion').addEventListener('click', async () => {
+                collectAnswer(false);
+                const questions = getFilteredQuestions();
+
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    renderQuestion();
+                } else {
+                    document.getElementById('loadingSpinner').classList.remove('hidden');
+                    document.getElementById('nextQuestion').disabled = true;
+                    document.getElementById('questionnaire').classList.add('hidden');
+                    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate processing
+                    displayResults();
+                    document.getElementById('loadingSpinner').classList.add('hidden');
+                    document.getElementById('results').classList.remove('hidden');
+                }
+            });
+
+            // Switch Language
+            function switchLanguage(lang, isIntro = false) {
+                const appElement = document.getElementById('app');
+                appElement.classList.add('language-switching');
+                setTimeout(() => {
+                    currentLang = lang;
+                    document.documentElement.lang = lang;
+                    if (isIntro) {
+                        document.getElementById('intro-title').textContent = translations[lang].title;
+                        document.getElementById('intro-description').textContent = translations[lang].introDescription;
+                        document.getElementById('motivationalQuote').textContent = motivationalQuotes[lang][Math.floor(Math.random() * motivationalQuotes[lang].length)];
+                        document.getElementById('intro-language').previousElementSibling.textContent = translations[lang].selectLanguage;
+                        document.getElementById('user-name').previousElementSibling.textContent = translations[lang].enterName;
+                        document.getElementById('intro-agree').previousElementSibling.textContent = translations[lang].confirmAgreement;
+                        document.getElementById('intro-agree').textContent = translations[lang].agree;
+                        document.getElementById('language-next').textContent = translations[lang].next;
+                        document.getElementById('name-next').textContent = translations[lang].next;
+                    } else {
+                        document.getElementById('siteTitle').textContent = translations[lang].title;
+                        document.getElementById('introText').textContent = translations[lang].intro;
+                        document.getElementById('resultsTitle').textContent = translations[lang].resultsTitle;
+                        document.getElementById('prevQuestion').textContent = translations[lang].prev;
+                        document.getElementById('nextQuestion').textContent = currentQuestionIndex === getFilteredQuestions().length - 1 ? (lang === 'ar' ? 'إرسال' : 'Submit') : translations[lang].next;
+                        document.getElementById('restart').textContent = translations[lang].restart;
+                        document.getElementById('backToQuestions').textContent = translations[lang].back;
+                        document.getElementById('exportPDF').textContent = translations[lang].exportPDF;
+                        document.getElementById('loadingSpinner').querySelector('p').textContent = translations[lang].loading;
+                        const timerSection = document.getElementById('studyTimer');
+                        timerSection.querySelector('h3').textContent = translations[lang].timer.title;
+                        timerSection.querySelector('#startTimer').textContent = translations[lang].timer.start;
+                        timerSection.querySelector('#resetTimer').textContent = translations[lang].timer.reset;
+                        settingsButton.innerHTML = lang === 'ar' ? '⚙️ الإعدادات' : '⚙️ Settings';
+                        settingsPanel.querySelector('h2').textContent = translations[lang].settings;
+                        settingsPanel.querySelector('label[for="languageToggle"]').textContent = translations[lang].language + ':';
+                        settingsPanel.querySelector('label[for="fontSizeControls"]').textContent = translations[lang].fontSize || (lang === 'ar' ? 'حجم الخط:' : 'Font Size:');
+                        const devInfo = settingsPanel.querySelector('.developer-info');
+                        devInfo.querySelector('h3').textContent = translations[lang].developerInfo.title;
+                        devInfo.querySelectorAll('p')[0].textContent = translations[lang].developerInfo.name;
+                        devInfo.querySelectorAll('p')[1].textContent = translations[lang].developerInfo.email;
+                        devInfo.querySelectorAll('p')[2].textContent = translations[lang].developerInfo.version;
+                        devInfo.querySelectorAll('p')[3].textContent = translations[lang].developerInfo.instagram;
+                        renderQuestion();
+                        updateNavigation();
+                    }
+                    appElement.classList.remove('language-switching');
+                }, 250);
+            }
+
+            // Adjust Font Size
+            function adjustFontSize(increase) {
+                let currentSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size')) || 16;
+                currentSize = increase ? Math.min(currentSize + 2, 24) : Math.max(currentSize - 2, 12);
+                document.documentElement.style.setProperty('--font-size', `${currentSize}px`);
+            }
+
+            // Convert Time to 12-Hour Format
+            function to12HourFormat(time) {
+                const [hours, minutes] = time.split(':').map(Number);
+                const period = hours >= 12 ? (currentLang === 'ar' ? 'م' : 'PM') : (currentLang === 'ar' ? 'ص' : 'AM');
+                const adjustedHours = hours % 12 || 12;
+                return `${adjustedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+            }
+
+            // Generate Fallback Results
+            function generateFallbackResults(data) {
+                let score = 0;
+                let recommendations = [];
+                const age = parseInt(data.age) || 0;
+                const height = parseInt(data.height) || 0;
+                const weight = parseInt(data.weight) || 0;
+                const bmi = weight && height ? (weight / ((height / 100) * (height / 100))).toFixed(1) : null;
+
+                if (parseInt(data.sleepHours) >= 7 && data.sleepQuality !== (currentLang === 'ar' ? 'سيئ BAD' : 'Poor BAD')) score += 30;
+                if (parseInt(data.studyHours) >= 4) score += 30;
+                if (data.mood === (currentLang === 'ar' ? 'إيجابي POSITIVE' : 'Positive POSITIVE')) score += 20;
+                if (parseInt(data.mealsPerDay) >= 3) score += 20;
+
+                if (age > 0) {
+                    if (age < 18) recommendations.push(currentLang === 'ar' ? 'أنت في مرحلة النمو، تأكد من أخذ قسط كافٍ من الراحة.' : 'You are in a growth phase, ensure you get enough rest.');
+                    else if (age > 40) recommendations.push(currentLang === 'ar' ? 'اهتم بصحتك العامة مع تقدم العمر.' : 'Take care of your overall health as you age.');
+                }
+
+                if (bmi) {
+                    if (bmi < 18.5) recommendations.push(currentLang === 'ar' ? 'مؤشر كتلة جسمك منخفض، حاول زيادة وزنك بشكل صحي.' : 'Your BMI is low, try to gain weight healthily.');
+                    else if (bmi > 25) recommendations.push(currentLang === 'ar' ? 'مؤشر كتلة جسمك مرتفع، حاول اتباع نظام غذائي صحي.' : 'Your BMI is high, try following a healthy diet.');
+                }
+
+                let prediction;
+                if (score >= 80) {
+                    prediction = currentLang === 'ar' ? 'ممتاز: من المتوقع أن تحقق أداءً أكاديميًا متميزًا.' : 'Excellent: You are expected to achieve outstanding academic performance.';
+                    recommendations.push(currentLang === 'ar' ? 'استمر في الحفاظ على نمط حياتك الحالي.' : 'Continue maintaining your current lifestyle.');
+                } else if (score >= 50) {
+                    prediction = currentLang === 'ar' ? 'جيد: أداؤك الأكاديمي جيد، لكن هناك مجال للتحسين.' : 'Good: Your academic performance is good, but there is room for improvement.';
+                    recommendations.push(currentLang === 'ar' ? 'حاول تحسين جودة نومك وزيادة ساعات الدراسة.' : 'Try improving your sleep quality and increasing study hours.');
+                } else {
+                    prediction = currentLang === 'ar' ? 'يحتاج إلى تحسين: أداؤك الأكاديمي قد يكون ضعيفًا بدون تغييرات.' : 'Needs Improvement: Your academic performance may be poor without changes.';
+                    recommendations.push(currentLang === 'ar' ? 'ركز على النوم الكافي، التغذية الجيدة، وتنظيم وقت الدراسة.' : 'Focus on sufficient sleep, good nutrition, and organized study time.');
+                }
+
+                const schedule = data.examPeriod === (currentLang === 'ar' ? 'نعم YES' : 'Yes YES') ? generateExamSchedule(data) : generateRegularSchedule(data);
+                const prayerSchedule = generatePrayerSchedule(data);
+                const dietPlan = generateDietPlan(data);
+
+                return { prediction, recommendations, schedule, prayerSchedule, dietPlan };
+            }
+
+            // Generate Regular Daily Schedule
+            function generateRegularSchedule(data) {
+                return [
+                    { time: '06:00', activity: currentLang === 'ar' ? 'الاستيقاظ' : 'Wake Up' },
+                    { time: '06:30', activity: currentLang === 'ar' ? 'تمارين رياضية (30 دقيقة)' : 'Exercise (30 minutes)' },
+                    { time: '08:00', activity: currentLang === 'ar' ? 'دراسة (2 ساعة)' : 'Study (2 hours)' },
+                    { time: '10:00', activity: currentLang === 'ar' ? 'استراحة (15 دقيقة)' : 'Break (15 minutes)' },
+                    { time: '10:15', activity: currentLang === 'ar' ? 'دراسة (2 ساعة)' : 'Study (2 hours)' },
+                    { time: '13:30', activity: currentLang === 'ar' ? 'راحة أو هواية (1 ساعة)' : 'Rest or Hobby (1 hour)' },
+                    { time: '16:00', activity: currentLang === 'ar' ? 'دراسة (2 ساعة)' : 'Study (2 hours)' },
+                    { time: '18:00', activity: currentLang === 'ar' ? 'استراحة أو تمارين خفيفة' : 'Break or Light Exercise' },
+                    { time: '21:00', activity: currentLang === 'ar' ? 'مراجعة أو قراءة خفيفة' : 'Review or Light Reading' },
+                    { time: '22:00', activity: currentLang === 'ar' ? 'النوم' : 'Sleep' }
+                ];
+            }
+
+            // Generate Exam Period Schedule
+            function generateExamSchedule(data) {
+                return [
+                    { time: '05:30', activity: currentLang === 'ar' ? 'الاستيقاظ' : 'Wake Up' },
+                    { time: '06:00', activity: currentLang === 'ar' ? 'مراجعة سريعة (1 ساعة)' : 'Quick Review (1 hour)' },
+                    { time: '07:30', activity: currentLang === 'ar' ? 'دراسة مكثفة (3 ساعات)' : 'Intensive Study (3 hours)' },
+                    { time: '10:30', activity: currentLang === 'ar' ? 'استراحة (15 دقيقة)' : 'Break (15 minutes)' },
+                    { time: '10:45', activity: currentLang === 'ar' ? 'دراسة مكثفة (2 ساعة)' : 'Intensive Study (2 hours)' },
+                    { time: '13:30', activity: currentLang === 'ar' ? 'راحة قصيرة (30 دقيقة)' : 'Short Rest (30 minutes)' },
+                    { time: '15:30', activity: currentLang === 'ar' ? 'دراسة مكثفة (3 ساعات)' : 'Intensive Study (3 hours)' },
+                    { time: '19:15', activity: currentLang === 'ar' ? 'مراجعة خفيفة (1 ساعة)' : 'Light Review (1 hour)' },
+                    { time: '21:00', activity: currentLang === 'ar' ? 'استرخاء' : 'Relaxation' },
+                    { time: '21:30', activity: currentLang === 'ar' ? 'النوم' : 'Sleep' }
+                ];
+            }
+
+            // Generate Prayer Schedule
+            function generatePrayerSchedule(data) {
+                if (data.religion !== (currentLang === 'ar' ? 'مسلم MUSLIM' : 'Muslim MUSLIM')) return [];
+                const isExamPeriod = data.examPeriod === (currentLang === 'ar' ? 'نعم YES' : 'Yes YES');
+                return isExamPeriod ? [
+                    { time: '05:45', prayer: currentLang === 'ar' ? 'صلاة الفجر' : 'Fajr Prayer', duration: '10 دقائق', notes: currentLang === 'ar' ? 'تأكد من الوضوء قبل الصلاة' : 'Ensure wudu before prayer' },
+                    { time: '12:45', prayer: currentLang === 'ar' ? 'صلاة الظهر' : 'Dhuhr Prayer', duration: '15 دقيقة', notes: currentLang === 'ar' ? 'يفضل الصلاة في المسجد' : 'Preferably pray at the mosque' },
+                    { time: '15:00', prayer: currentLang === 'ar' ? 'صلاة العصر' : 'Asr Prayer', duration: '10 دقائق', notes: currentLang === 'ar' ? 'حافظ على الخشوع' : 'Maintain focus during prayer' },
+                    { time: '18:30', prayer: currentLang === 'ar' ? 'صلاة المغرب' : 'Maghrib Prayer', duration: '10 دقائق', notes: currentLang === 'ar' ? 'صلي فور سماع الأذان' : 'Pray immediately after adhan' },
+                    { time: '20:15', prayer: currentLang === 'ar' ? 'صلاة العشاء' : 'Isha Prayer', duration: '15 دقيقة', notes: currentLang === 'ar' ? 'خصص وقتًا للدعاء بعد الصلاة' : 'Dedicate time for dua after prayer' }
+                ] : [
+                    { time: '06:15', prayer: currentLang === 'ar' ? 'صلاة الفجر' : 'Fajr Prayer', duration: '10 دقائق', notes: currentLang === 'ar' ? 'تأكد من الوضوء قبل الصلاة' : 'Ensure wudu before prayer' },
+                    { time: '12:30', prayer: currentLang === 'ar' ? 'صلاة الظهر' : 'Dhuhr Prayer', duration: '15 دقيقة', notes: currentLang === 'ar' ? 'يفضل الصلاة في المسجد' : 'Preferably pray at the mosque' },
+                    { time: '15:30', prayer: currentLang === 'ar' ? 'صلاة العصر' : 'Asr Prayer', duration: '10 دقائق', notes: currentLang === 'ar' ? 'حافظ على الخشوع' : 'Maintain focus during prayer' },
+                    { time: '19:00', prayer: currentLang === 'ar' ? 'صلاة المغرب' : 'Maghrib Prayer', duration: '10 دقائق', notes: currentLang === 'ar' ? 'صلي فور سماع الأذان' : 'Pray immediately after adhan' },
+                    { time: '20:30', prayer: currentLang === 'ar' ? 'صلاة العشاء' : 'Isha Prayer', duration: '15 دقيقة', notes: currentLang === 'ar' ? 'خصص وقتًا للدعاء بعد الصلاة' : 'Dedicate time for dua after prayer' }
+                ];
+            }
+
+            // Generate Diet Plan
+            function generateDietPlan(data) {
+                const budget = parseInt(data.budget) || 0;
+                const hasDiet = data.dietFollowed === (currentLang === 'ar' ? 'نعم YES' : 'Yes YES');
+                const bodyGoal = data.bodyGoal;
+                let dietPlan = [];
+                const dailyBudget = budget / 30;
+
+                if (hasDiet) {
+                    dietPlan.push({
+                        meal: currentLang === 'ar' ? 'متابعة النظام الغذائي الحالي' : 'Continue Current Diet',
+                        price: dailyBudget,
+                        protein: 0,
+                        carbs: 0,
+                        creatine: 0,
+                        fats: 0,
+                        fiber: 0,
+                        vitamins: currentLang === 'ar' ? 'غير محدد' : 'Unspecified',
+                        minerals: currentLang === 'ar' ? 'غير محدد' : 'Unspecified',
+                        calories: 0
+                    });
+                } else {
+                    if (bodyGoal === (currentLang === 'ar' ? 'تضخيم BULKING' : 'Bulking BULKING')) {
+                        dietPlan = [
+                            {
+                                meal: currentLang === 'ar' ? 'الإفطار: بيض، شوفان، موز، حليب' : 'Breakfast: Eggs, oats, banana, milk',
+                                price: dailyBudget * 0.3,
+                                protein: 25, carbs: 50,
+                                creatine: 5,
+                                fats: 15,
+                                fiber: 8,
+                                vitamins: currentLang === 'ar' ? 'A, B, D' : 'A, B, D',
+                                minerals: currentLang === 'ar' ? 'كالسيوم، حديد' : 'Calcium, Iron',
+                                calories: 600
+                            },
+                            {
+                                meal: currentLang === 'ar' ? 'الغداء: أرز، دجاج، خضار' : 'Lunch: Rice, chicken, vegetables',
+                                price: dailyBudget * 0.4,
+                                protein: 40,
+                                carbs: 70,
+                                creatine: 0,
+                                fats: 20,
+                                fiber: 10,
+                                vitamins: currentLang === 'ar' ? 'B, C, K' : 'B, C, K',
+                                minerals: currentLang === 'ar' ? 'حديد، مغنيسيوم' : 'Iron, Magnesium',
+                                calories: 800
+                            },
+                            {
+                                meal: currentLang === 'ar' ? 'العشاء: سمك، بطاطا حلوة، سلطة' : 'Dinner: Fish, sweet potato, salad',
+                                price: dailyBudget * 0.3,
+                                protein: 35,
+                                carbs: 40,
+                                creatine: 0,
+                                fats: 15,
+                                fiber: 12,
+                                vitamins: currentLang === 'ar' ? 'A, C, E' : 'A, C, E',
+                                minerals: currentLang === 'ar' ? 'زنك، سيلينيوم' : 'Zinc, Selenium',
+                                calories: 700
+                            }
+                        ];
+                    } else if (bodyGoal === (currentLang === 'ar' ? 'تنشيف CUTTING' : 'Cutting CUTTING')) {
+                        dietPlan = [
+                            {
+                                meal: currentLang === 'ar' ? 'الإفطار: بياض بيض، أفوكادو، خبز أسمر' : 'Breakfast: Egg whites, avocado, brown bread',
+                                price: dailyBudget * 0.3,
+                                protein: 30,
+                                carbs: 30,
+                                creatine: 5,
+                                fats: 10,
+                                fiber: 10,
+                                vitamins: currentLang === 'ar' ? 'B, E, K' : 'B, E, K',
+                                minerals: currentLang === 'ar' ? 'بوتاسيوم، مغنيسيوم' : 'Potassium, Magnesium',
+                                calories: 400
+                            },
+                            {
+                                meal: currentLang === 'ar' ? 'الغداء: صدر دجاج، بروكلي، أرز بني' : 'Lunch: Chicken breast, broccoli, brown rice',
+                                price: dailyBudget * 0.4,
+                                protein: 50,
+                                carbs: 40,
+                                creatine: 0,
+                                fats: 10,
+                                fiber: 12,
+                                vitamins: currentLang === 'ar' ? 'A, C, K' : 'A, C, K',
+                                minerals: currentLang === 'ar' ? 'حديد، كالسيوم' : 'Iron, Calcium',
+                                calories: 500
+                            },
+                            {
+                                meal: currentLang === 'ar' ? 'العشاء: تونة، خضار مشوية' : 'Dinner: Tuna, grilled vegetables',
+                                price: dailyBudget * 0.3,
+                                protein: 40,
+                                carbs: 20,
+                                creatine: 0,
+                                fats: 10,
+                                fiber: 15,
+                                vitamins: currentLang === 'ar' ? 'A, B, D' : 'A, B, D',
+                                minerals: currentLang === 'ar' ? 'أوميغا 3، سيلينيوم' : 'Omega 3, Selenium',
+                                calories: 450
+                            }
+                        ];
+                    } else {
+                        // Normal diet
+                        dietPlan = [
+                            {
+                                meal: currentLang === 'ar' ? 'الإفطار: حبوب كاملة، فواكه، زبادي' : 'Breakfast: Whole grains, fruits, yogurt',
+                                price: dailyBudget * 0.3,
+                                protein: 20,
+                                carbs: 60,
+                                creatine: 0,
+                                fats: 10,
+                                fiber: 10,
+                                vitamins: currentLang === 'ar' ? 'B, C, D' : 'B, C, D',
+                                minerals: currentLang === 'ar' ? 'كالسيوم، بوتاسيوم' : 'Calcium, Potassium',
+                                calories: 500
+                            },
+                            {
+                                meal: currentLang === 'ar' ? 'الغداء: لحوم قليلة الدهن، خضار، أرز' : 'Lunch: Lean meat, vegetables, rice',
+                                price: dailyBudget * 0.4,
+                                protein: 35,
+                                carbs: 50,
+                                creatine: 0,
+                                fats: 15,
+                                fiber: 12,
+                                vitamins: currentLang === 'ar' ? 'A, B, K' : 'A, B, K',
+                                minerals: currentLang === 'ar' ? 'حديد، مغنيسيوم' : 'Iron, Magnesium',
+                                calories: 600
+                            },
+                            {
+                                meal: currentLang === 'ar' ? 'العشاء: شوربة، سلطة، خبز' : 'Dinner: Soup, salad, bread',
+                                price: dailyBudget * 0.3,
+                                protein: 25,
+                                carbs: 40,
+                                creatine: 0,
+                                fats: 10,
+                                fiber: 15,
+                                vitamins: currentLang === 'ar' ? 'A, C, E' : 'A, C, E',
+                                minerals: currentLang === 'ar' ? 'زنك، سيلينيوم' : 'Zinc, Selenium',
+                                calories: 450
+                            }
+                        ];
+                    }
+                }
+
+                return dietPlan;
+            }
+
+            // Display Results
+            function displayResults() {
+                const results = generateFallbackResults(answers);
+                if (answers['studentType'] && answers['studentType'].includes('TAWJIHI')) {
+                    renderTawjihiDashboard(results);
+                } else {
+                    renderGeneralDashboard(results);
+                }
+            }
+
+            // Render General Dashboard (The original one)
+            function renderGeneralDashboard(results) {
+                const academicPrediction = document.getElementById('academicPrediction');
+                const dailySchedule = document.getElementById('dailySchedule');
+                const prayerSchedule = document.getElementById('prayerSchedule');
+                const dietPlan = document.getElementById('dietPlan');
+
+                // Academic Prediction
+                academicPrediction.innerHTML = `
+                <h3 class="font-medium text-lg mb-2">${currentLang === 'ar' ? 'التنبؤ الأكاديمي' : 'Academic Prediction'}</h3>
+                <p class="mb-4">${results.prediction}</p>
+                <h4 class="font-medium mb-2">${currentLang === 'ar' ? 'التوصيات' : 'Recommendations'}:</h4>
+                <ul class="list-disc pl-5">
+                    ${results.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                </ul>
+            `;
+
+                // Daily Schedule
+                dailySchedule.innerHTML = `
+                <h3 class="font-medium text-lg mb-4">${currentLang === 'ar' ? 'الجدول اليومي المقترح' : 'Suggested Daily Schedule'}</h3>
+                <table class="w-full result-table">
+                    <thead>
+                        <tr>
+                            <th class="py-2">${currentLang === 'ar' ? 'الوقت' : 'Time'}</th>
+                            <th class="py-2">${currentLang === 'ar' ? 'النشاط' : 'Activity'}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${results.schedule.map(item => `
+                            <tr class="table-row">
+                                <td class="py-2">${to12HourFormat(item.time)}</td>
+                                <td class="py-2">${item.activity}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+                // Prayer Schedule
+                if (results.prayerSchedule.length > 0) {
+                    prayerSchedule.innerHTML = `
+                    <h3 class="font-medium text-lg mb-4">${currentLang === 'ar' ? 'جدول الصلاة' : 'Prayer Schedule'}</h3>
+                    <table class="w-full result-table">
+                        <thead>
+                            <tr>
+                                <th class="py-2">${currentLang === 'ar' ? 'الوقت' : 'Time'}</th>
+                                <th class="py-2">${currentLang === 'ar' ? 'الصلاة' : 'Prayer'}</th>
+                                <th class="py-2">${currentLang === 'ar' ? 'المدة' : 'Duration'}</th>
+                                <th class="py-2">${currentLang === 'ar' ? 'ملاحظات' : 'Notes'}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${results.prayerSchedule.map(item => `
+                                <tr class="table-row">
+                                    <td class="py-2">${to12HourFormat(item.time)}</td>
+                                    <td class="py-2">${item.prayer}</td>
+                                    <td class="py-2">${item.duration}</td>
+                                    <td class="py-2">${item.notes}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                } else {
+                    prayerSchedule.innerHTML = `
+                    <h3 class="font-medium text-lg mb-4">${currentLang === 'ar' ? 'جدول الصلاة' : 'Prayer Schedule'}</h3>
+                    <p>${currentLang === 'ar' ? 'لا يوجد جدول صلاة مقترح بناءً على إجاباتك' : 'No prayer schedule suggested based on your answers'}</p>
+                `;
+                }
+
+                // Diet Plan
+                dietPlan.innerHTML = `
+                <h3 class="font-medium text-lg mb-4">${currentLang === 'ar' ? 'الخطة الغذائية' : 'Diet Plan'}</h3>
+                <div class="overflow-x-auto">
+                    <table class="result-table w-full whitespace-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="py-2">${currentLang === 'ar' ? 'الوجبة' : 'Meal'}</th>
+                                <th class="py-2">${currentLang === 'ar' ? 'السعر' : 'Price'}</th>
+                                <th class="py-2">${currentLang === 'ar' ? 'بروتين' : 'Protein'} <span class="text-xs font-normal">(g)</span></th>
+                                <th class="py-2">${currentLang === 'ar' ? 'كارب' : 'Carbs'} <span class="text-xs font-normal">(g)</span></th>
+                                <th class="py-2">${currentLang === 'ar' ? 'كرياتين' : 'Creatine'} <span class="text-xs font-normal">(g)</span></th>
+                                <th class="py-2">${currentLang === 'ar' ? 'دهون' : 'Fats'} <span class="text-xs font-normal">(g)</span></th>
+                                <th class="py-2">${currentLang === 'ar' ? 'ألياف' : 'Fiber'} <span class="text-xs font-normal">(g)</span></th>
+                                <th class="py-2">${currentLang === 'ar' ? 'فيتامينات' : 'Vitamins'}</th>
+                                <th class="py-2">${currentLang === 'ar' ? 'معادن' : 'Minerals'}</th>
+                                <th class="py-2">${currentLang === 'ar' ? 'سعرات' : 'Calories'}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${results.dietPlan.map(item => `
+                                <tr class="table-row">
+                                    <td class="py-2 font-medium">${item.meal}</td>
+                                    <td class="py-2">${item.price.toFixed(2)}</td>
+                                    <td class="py-2 bg-blue-500/10">${item.protein}</td>
+                                    <td class="py-2">${item.carbs}</td>
+                                    <td class="py-2">${item.creatine}</td>
+                                    <td class="py-2">${item.fats}</td>
+                                    <td class="py-2">${item.fiber}</td>
+                                    <td class="py-2 text-xs max-w-[100px] truncate" title="${item.vitamins}">${item.vitamins}</td>
+                                    <td class="py-2 text-xs max-w-[100px] truncate" title="${item.minerals}">${item.minerals}</td>
+                                    <td class="py-2 bg-green-500/10 font-bold">${item.calories}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                `;
+            }
+
+            // Render Tawjihi Dashboard
+            function renderTawjihiDashboard(results) {
+                // First, render the general dashboard to show Diet, Prayer, Prediction
+                renderGeneralDashboard(results);
+
+                const schedule = generateTawjihiSchedule(answers);
+
+                // Now, replace the "Daily Schedule" card with the specialized "30-Day Challenge" card
+                const dailyScheduleContent = document.getElementById('dailySchedule');
+                if (dailyScheduleContent) {
+                    const card = dailyScheduleContent.closest('.glass-panel');
+                    if (card) {
+                        card.classList.remove('border-l-blue-500');
+                        card.classList.add('border-l-purple-500');
+
+                        card.innerHTML = `
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                                    <span class="text-3xl">📅</span> ${currentLang === 'ar' ? 'تحدي الـ 30 يوم (توجيهي)' : '30-Day Tawjihi Challenge'}
+                                </h3>
+                                <p class="text-gray-400 mt-1">${currentLang === 'ar' ? 'خطة دراسية ذكية تعتمد على التنوع لضمان تثبيت المعلومات' : 'Smart interleaved study plan for better retention'}</p>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="view-toggle" onclick="toggleView(this)">
+                                    <div class="view-toggle-slider"></div>
+                                    <div class="view-toggle-option active" data-view="timeline">${currentLang === 'ar' ? 'جدول' : 'Timeline'}</div>
+                                    <div class="view-toggle-option" data-view="todo">${currentLang === 'ar' ? 'مهام' : 'To-Do'}</div>
+                                </div>
+                                <button onclick="printSchedule()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors">
+                                    <span>🖨️</span> ${currentLang === 'ar' ? 'طباعة' : 'Print'}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="tawjihiScheduleContainer" class="space-y-6 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar" data-view="timeline">
+                            <!-- Injected via JS -->
+                        </div>
+                        `;
+
+                        renderScheduleItems(schedule);
+                    }
+                }
+            }
+
+            function renderScheduleItems(schedule) {
+                const container = document.getElementById('tawjihiScheduleContainer');
+                const isTimeline = container.getAttribute('data-view') === 'timeline';
+
+                container.innerHTML = schedule.map((day, index) => {
+                    const dayNum = index + 1;
+                    if (isTimeline) {
+                        return `
+                            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
+                                <div class="flex justify-between items-center mb-3 border-b border-white/5 pb-2">
+                                    <h4 class="font-bold text-indigo-300">Day ${dayNum}</h4>
+                                    <span class="text-xs text-gray-400">${day.focus}</span>
+                                </div>
+                                <div class="space-y-3">
+                                    ${day.sessions.map(session => `
+                                        <div class="timeline-item">
+                                            <span class="text-xs text-indigo-400 block mb-1">${session.time}</span>
+                                            <p class="text-white font-medium">${session.subject}</p>
+                                            <p class="text-sm text-gray-400">${session.task}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        return `
+                            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h4 class="font-bold text-emerald-300">Day ${dayNum} - To-Do List</h4>
+                                    <div class="h-2 w-20 bg-gray-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-500 w-0 transition-all duration-500" id="progress-${dayNum}"></div>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    ${day.sessions.map((session, sIdx) => `
+                                        <div class="todo-item" onclick="toggleTask(this, ${dayNum})">
+                                            <div class="todo-checkbox">✓</div>
+                                            <div>
+                                                <p class="text-white font-medium decoration-slice">${session.subject}</p>
+                                                <p class="text-xs text-gray-400">${session.task} (${session.duration})</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                }).join('');
+            }
+
+            // Generate Smart interleaved Schedule
+            function generateTawjihiSchedule(data) {
+                const subjects = [
+                    { name: 'تاريخ الأردن', level: parseInt(data.historyLevel) || 5 },
+                    { name: 'اللغة العربية', level: parseInt(data.arabicLevel) || 5 },
+                    { name: 'التربية الإسلامية', level: parseInt(data.religionLevel) || 5 },
+                    { name: 'اللغة الإنجليزية', level: parseInt(data.englishLevel) || 5 }
+                ];
+
+                // Prioritize lower level subjects
+                subjects.sort((a, b) => a.level - b.level); // Ascending: hardest (lowest level) first
+
+                const studyHours = parseInt(data.studyHours) || 4;
+                const sessionsPerDay = 2; // Fixed as requested
+                const sessionDuration = Math.floor(studyHours / sessionsPerDay);
+
+                let schedule = [];
+                for (let i = 0; i < 30; i++) {
+                    // Pick 2 subjects (Rotate them)
+                    const sub1 = subjects[i % subjects.length];
+                    const sub2 = subjects[(i + 1) % subjects.length];
+
+                    // Simple logic: Ensure they are different. If not (e.g. only 1 subject?), handled by mod.
+                    // With 4 subjects:
+                    // Day 1: 0, 1
+                    // Day 2: 1, 2
+                    // Day 3: 2, 3
+                    // Day 4: 3, 0
+                    // Ensures interleaving and overlap.
+
+                    schedule.push({
+                        date: new Date().addDays(i),
+                        focus: `${sub1.name} + ${sub2.name}`,
+                        sessions: [
+                            { time: '04:00 PM - 06:00 PM', subject: sub1.name, task: 'دراسة مكثفة + حل أسئلة', duration: `${sessionDuration}س` },
+                            { time: '07:00 PM - 09:00 PM', subject: sub2.name, task: 'مراجعة + تحضير', duration: `${sessionDuration}س` }
+                        ]
+                    });
+                }
+                return schedule;
+            }
+
+            // Helper to add days
+            Date.prototype.addDays = function (days) {
+                var date = new Date(this.valueOf());
+                date.setDate(date.getDate() + days);
+                return date;
+            }
+
+            // Global functions for inline events
+            window.toggleView = function (el) {
+                const slider = el.querySelector('.view-toggle-slider');
+                const container = document.getElementById('tawjihiScheduleContainer');
+                const currentView = container.getAttribute('data-view');
+                const newView = currentView === 'timeline' ? 'todo' : 'timeline';
+
+                container.setAttribute('data-view', newView);
+                container.parentElement.setAttribute('data-active', newView); // For CSS slider
+
+                // Re-render
+                // Note: In a real app we'd save the schedule object globally to re-use.
+                // For now, re-generate is cheap (or we could store it in a variable).
+                // Let's store it conceptually or just regenerate.
+                const schedule = generateTawjihiSchedule(answers);
+                renderScheduleItems(schedule);
+
+                // Update slider visual (handled by CSS via data-active on parent probably, or we toggle classes)
+                const options = el.querySelectorAll('.view-toggle-option');
+                options.forEach(opt => opt.classList.toggle('active'));
+
+                if (newView === 'todo') {
+                    slider.style.transform = 'translateX(100%)';
+                } else {
+                    slider.style.transform = 'translateX(0)';
+                }
+            }
+
+            window.toggleTask = function (el, dayNum) {
+                const checkbox = el.querySelector('.todo-checkbox');
+                checkbox.classList.toggle('checked');
+                el.querySelector('p').classList.toggle('line-through');
+                el.querySelector('p').classList.toggle('text-gray-500');
+
+                // Calculate progress
+                const parent = el.parentElement;
+                const total = parent.children.length;
+                const checked = parent.querySelectorAll('.checked').length;
+                const progress = (checked / total) * 100;
+                document.getElementById(`progress-${dayNum}`).style.width = `${progress}%`;
+            }
+
+            window.printSchedule = function () {
+                // Apply theme based on gender
+                const gender = answers['gender'];
+                const themeClass = (gender && gender.includes('FEMALE')) ? 'theme-pink' : 'theme-dark';
+                const customTitle = answers['scheduleTitle'] || (currentLang === 'ar' ? 'خطة الـ 30 يوم' : '30-Day Plan');
+
+                const printWindow = window.open('', '_blank');
+                const schedule = generateTawjihiSchedule(answers);
+
+                let printHTML = `
+                    <html>
+                    <head>
+                        <title>30-Day Tawjihi Challenge</title>
+                        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+                        <style>
+                            body { font-family: 'Cairo', sans-serif; padding: 20px; direction: rtl; background: white; }
+                            .main-title { text-align: center; font-size: 2.5em; font-weight: bold; color: #333; margin-bottom: 10px; }
+                            h1 { text-align: center; color: #666; font-size: 1.2em; margin-bottom: 30px; }
+                            .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+                            .day-card { border: 1px solid #ccc; padding: 10px; border-radius: 8px; page-break-inside: avoid; }
+                            .day-header { font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid #eee; }
+                            .session { margin-top: 5px; font-size: 0.9em; }
+                            
+                            /* Theme Specifics */
+                            .theme-pink body { background: #fff0f5; color: #880e4f; }
+                            .theme-pink .day-card { border-color: #f8bbd0; background: white; }
+                            .theme-pink h1 { color: #d81b60; }
+
+                            .theme-dark body { background: white; color: black; }
+                            .theme-dark .day-card { border: 2px solid #333; }
+                        </style>
+                    </head>
+                    <body class="${themeClass}">
+                        <div class="main-title">📅 ${customTitle}</div>
+                        <h1>خطة دراسية لـ ${answers['user-name'] || 'الطالب المجتهد'}</h1>
+
+                        <div class="grid">
+                            ${schedule.map((day, i) => `
+                                <div class="day-card">
+                                    <div class="day-header">اليوم ${i + 1}: ${day.focus}</div>
+                                    ${day.sessions.map(s => `
+                                        <div class="session">🔲 ${s.subject}: ${s.task}</div>
+                                    `).join('')}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <script>window.print(); window.close();<\/script>
+                    </body>
+                    </html>
+                `;
+
+                printWindow.document.write(printHTML);
+                printWindow.document.close();
+            }
+
+            // Timer Logic
+            let timerInterval;
+            let timerSeconds = 25 * 60; // 25 minutes
+            const timerDisplay = document.getElementById('timerDisplay');
+            const startTimer = document.getElementById('startTimer');
+            const resetTimer = document.getElementById('resetTimer');
+
+            function updateTimerDisplay() {
+                const minutes = Math.floor(timerSeconds / 60);
+                const seconds = timerSeconds % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} `;
+            }
+
+            startTimer.addEventListener('click', () => {
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    startTimer.textContent = currentLang === 'ar' ? 'استئناف' : 'Resume';
+                } else {
+                    timerInterval = setInterval(() => {
+                        timerSeconds--;
+                        updateTimerDisplay();
+                        if (timerSeconds <= 0) {
+                            clearInterval(timerInterval);
+                            timerInterval = null;
+                            showToast('timerFinished');
+                            startTimer.textContent = currentLang === 'ar' ? 'بدء' : 'Start';
+                        }
+                    }, 1000);
+                    startTimer.textContent = currentLang === 'ar' ? 'إيقاف' : 'Pause';
+                }
+            });
+
+            resetTimer.addEventListener('click', () => {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                timerSeconds = 25 * 60;
+                updateTimerDisplay();
+                startTimer.textContent = currentLang === 'ar' ? 'بدء' : 'Start';
+            });
+
+            // Navigation Buttons
+            document.getElementById('backToQuestions').addEventListener('click', () => {
+                document.getElementById('results').classList.add('hidden');
+                document.getElementById('questionnaire').classList.remove('hidden');
+                showToast('returnToQuestions');
+            });
+
+            document.getElementById('restart').addEventListener('click', () => {
+                currentQuestionIndex = 0;
+                answers = {};
+                localStorage.removeItem('userAnswers');
+                document.getElementById('results').classList.add('hidden');
+                document.getElementById('questionnaire').classList.remove('hidden');
+                renderQuestion();
+                showToast('restartSuccess');
+            });
+
+            // Export to PDF
+            document.getElementById('exportPDF').addEventListener('click', () => {
+                const academicPrediction = document.getElementById('academicPrediction');
+                const dailySchedule = document.getElementById('dailySchedule');
+                const prayerSchedule = document.getElementById('prayerSchedule');
+                const dietPlan = document.getElementById('dietPlan');
+
+                // Helper function to convert HTML table to pdfMake table
+                function htmlTableToPdfTable(element) {
+                    const table = element.querySelector('table');
+                    if (!table) {
+                        return { text: element.innerText || '', style: 'content' };
+                    }
+
+                    const rows = [];
+                    const headers = table.querySelectorAll('thead th');
+                    const headerRow = [];
+                    headers.forEach(th => {
+                        headerRow.push({ text: th.innerText, style: 'tableHeader', bold: true });
+                    });
+                    if (headerRow.length > 0) rows.push(headerRow);
+
+                    const bodyRows = table.querySelectorAll('tbody tr');
+                    bodyRows.forEach(tr => {
+                        const row = [];
+                        tr.querySelectorAll('td').forEach(td => {
+                            row.push({ text: td.innerText, style: 'tableCell' });
+                        });
+                        if (row.length > 0) rows.push(row);
+                    });
+
+                    return {
+                        table: {
+                            headerRows: headers.length > 0 ? 1 : 0,
+                            widths: Array(headerRow.length || (rows[0] ? rows[0].length : 1)).fill('auto'),
+                            body: rows
+                        },
+                        layout: 'lightHorizontalLines',
+                        margin: [0, 5, 0, 10]
+                    };
+                }
+
+                const docDefinition = {
+                    content: [
+                        { text: translations[currentLang].title, style: 'header' },
+                        { text: `${currentLang === 'ar' ? 'الاسم: ' : 'Name: '}${userName} `, style: 'subheader' },
+                        { text: currentLang === 'ar' ? 'التنبؤ الأكاديمي' : 'Academic Prediction', style: 'sectionHeader' },
+                        { text: academicPrediction.replace(/<[^>]*>/g, ''), style: 'content' },
+                        { text: currentLang === 'ar' ? 'الجدول اليومي' : 'Daily Schedule', style: 'sectionHeader' },
+                        { text: dailySchedule.replace(/<[^>]*>/g, ''), style: 'content' },
+                        { text: currentLang === 'ar' ? 'جدول الصلاة' : 'Prayer Schedule', style: 'sectionHeader' },
+                        { text: prayerSchedule.replace(/<[^>]*>/g, ''), style: 'content' },
+                        { text: currentLang === 'ar' ? 'الخطة الغذائية' : 'Diet Plan', style: 'sectionHeader' },
+                        { text: dietPlan.replace(/<[^>]*>/g, ''), style: 'content' }
+                    ],
+                    styles: {
+                        header: {
+                            fontSize: 18,
+                            bold: true,
+                            alignment: 'center',
+                            margin: [0, 0, 0, 20]
+                        },
+                        subheader: {
+                            fontSize: 14,
+                            bold: true,
+                            margin: [0, 0, 0, 10]
+                        },
+                        sectionHeader: {
+                            fontSize: 16,
+                            bold: true,
+                            margin: [0, 20, 0, 10]
+                        },
+                        content: {
+                            fontSize: 12,
+                            margin: [0, 0, 0, 15]
+                        },
+                        tableHeader: {
+                            fontSize: 11,
+                            bold: true,
+                            fillColor: '#f0f0f0',
+                            alignment: 'center'
+                        },
+                        tableCell: {
+                            fontSize: 10,
+                            margin: [3, 3, 3, 3]
+                        }
+                    },
+                    defaultStyle: {
+                        font: currentLang === 'ar' ? 'Amiri' : 'Roboto',
+                        alignment: currentLang === 'ar' ? 'right' : 'left'
+                    }
+                };
+
+                pdfMake.createPdf(docDefinition).download(`${currentLang === 'ar' ? 'خطة_مستقبلي_الذكي' : 'My_Smart_Future_Plan'}.pdf`);
+                showToast('exportSuccess');
+            });
+
+            // Initialize
+            updateTimerDisplay();
+        </script>
+    </div>
+</body>
+
+</html>

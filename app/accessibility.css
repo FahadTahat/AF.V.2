@@ -1,0 +1,134 @@
+/* Accessibility Settings Styles */
+
+/* High Contrast Mode */
+.high-contrast {
+    --contrast-multiplier: 1.5;
+}
+
+.high-contrast * {
+    border-color: currentColor !important;
+}
+
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast h6 {
+    font-weight: 900 !important;
+}
+
+.high-contrast p,
+.high-contrast span,
+.high-contrast div {
+    color: rgb(255, 255, 255) !important;
+}
+
+.high-contrast button {
+    border: 2px solid currentColor !important;
+    font-weight: 700 !important;
+}
+
+/* Reduce Motion */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+/* Reading Mode */
+.reading-mode {
+    background: #f5f5f0 !important;
+    color: #2a2a2a !important;
+}
+
+.reading-mode * {
+    font-family: 'Georgia', 'Times New Roman', serif !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.03em !important;
+}
+
+.reading-mode h1,
+.reading-mode h2,
+.reading-mode h3,
+.reading-mode h4,
+.reading-mode h5,
+.reading-mode h6 {
+    color: #1a1a1a !important;
+    margin-top: 2em !important;
+    margin-bottom: 1em !important;
+}
+
+.reading-mode p {
+    color: #2a2a2a !important;
+    margin-bottom: 1.5em !important;
+    max-width: 70ch !important;
+}
+
+.reading-mode a {
+    color: #0066cc !important;
+    text-decoration: underline !important;
+}
+
+/* Dyslexia-Friendly Font */
+.dyslexia-font * {
+    font-family: 'OpenDyslexic', 'Comic Sans MS', 'Arial', sans-serif !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.05em !important;
+    word-spacing: 0.16em !important;
+}
+
+.dyslexia-font h1,
+.dyslexia-font h2,
+.dyslexia-font h3,
+.dyslexia-font h4,
+.dyslexia-font h5,
+.dyslexia-font h6 {
+    font-weight: 700 !important;
+}
+
+/* Focus Indicators for Accessibility */
+/* Focus Indicators for Accessibility - Modified */
+/* Default focus outline removed as per request */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+
+.high-contrast :focus-visible {
+    outline: 4px solid #ffff00 !important;
+    outline-offset: 3px !important;
+}
+
+/* Skip to Main Content Link */
+.skip-to-main {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #4a90e2;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 100;
+    border-radius: 0 0 4px 0;
+}
+
+.skip-to-main:focus {
+    top: 0;
+}
+
+/* Screen Reader Only */
+.sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

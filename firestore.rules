@@ -1,0 +1,145 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ================== HELPER FUNCTIONS ==================
+    
+    // التحقق من أن المستخدم مسجل دخول
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    // التحقق من أن المستخدم هو صاحب البيانات
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // ================== BOOKMARKS ==================
+    // المستخدم يقرأ ويعدل مفضلاته فقط
+    match /bookmarks/{bookmarkId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+    
+    // ================== PROGRESS ==================
+    // المستخدم يقرأ ويعدل تقدمه فقط
+    match /progress/{progressId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+    
+    // ================== COMMENTS ==================
+    // الكل يقرأ، المسجلين يكتبون، صاحب التعليق يعدل/يحذف
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && request.auth.uid == resource.data.userId;
+    }
+    
+    // ================== RATINGS ==================
+    // الكل يقرأ، المسجلين يكتبون تقييمهم فقط
+    match /ratings/{ratingId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+    
+    // ================== RESOURCES ==================
+    // الكل يقرأ، فقط الأدمن يعدل/يحذف (لا أحد من المستخدمين العاديين)
+    match /resources/{resourceId} {
+      allow read: if true;
+      allow create, update, delete: if false; // يُدار فقط من الكود الخلفي أو Firebase Console
+    }
+
+    // ================== USERS ==================
+    // أي مسجل يقرأ (عشان البروفايلات العامة)، صاحب الحساب فقط يعدل
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if isSignedIn() && (
+        request.auth.uid == userId || 
+        // السماح لنظام المتابعة بتحديث العدادات
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['followersCount', 'followingCount'])
+      );
+      allow delete: if false;
+    }
+
+    // ================== USER SUBCOLLECTIONS ==================
+    // المتابعين والمتابعات
+    match /users/{userId}/followers/{followerId} {
+      allow read: if isSignedIn();
+      allow create, delete: if isSignedIn() && request.auth.uid == followerId;
+      allow update: if false;
+    }
+    match /users/{userId}/following/{followingId} {
+      allow read: if isSignedIn();
+      allow create, delete: if isSignedIn() && request.auth.uid == userId;
+      allow update: if false;
+    }
+
+    // ================== MESSAGES (CHAT) ==================
+    // الكل يقرأ، المسجلين يكتبون (مع فحص الحظر)
+    match /messages/{messageId} {
+      allow read: if true;
+      allow create: if isSignedIn() && 
+                      (!exists(/databases/$(database)/documents/users/$(request.auth.uid)) ||
+                       !('timeoutUntil' in get(/databases/$(database)/documents/users/$(request.auth.uid)).data) ||
+                       get(/databases/$(database)/documents/users/$(request.auth.uid)).data.timeoutUntil < request.time);
+      allow update, delete: if false; // لا أحد يعدل أو يحذف الرسائل
+    }
+
+    // ================== STUDENT MESSAGES (TESTIMONIALS) ==================
+    match /studentMessages/{messageId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    // ================== LEADERBOARD ==================
+    // الكل يقرأ، فقط صاحب الحساب يحدث نقاطه
+    match /leaderboard/{leaderUserId} {
+      allow read: if true;
+      allow write: if isSignedIn() && request.auth.uid == leaderUserId;
+    }
+
+    // ================== NOTES ==================
+    // فقط صاحب الملاحظة يقرأ ويعدل
+    match /notes/{noteId} {
+      allow read, write: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn();
+    }
+
+    // ================== CHAT HISTORY ==================
+    // فقط صاحب المحادثة
+    match /chatHistory/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // ================== ACTIVITIES ==================
+    // المسجلين يقرأون ويضيفون فقط (لا تعديل أو حذف)
+    match /activities/{activityId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    // ================== ACHIEVEMENTS ==================
+    // الكل يقرأ (عشان بروفايلات المجتمع)، فقط صاحب الحساب يكتب
+    match /achievements/{achievementId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if false; // الإنجازات لا تُحذف أو تُعدل
+    }
+
+    // ================== OTP VERIFICATION ==================
+    // محمي: فقط الكود الخلفي (API Routes) يتعامل مع OTP
+    // لا نسمح للمستخدم بقراءة أو تعديل رموز التحقق مباشرة
+    match /otpCodes/{docId} {
+      allow read: if isSignedIn() && request.auth.uid == resource.data.uid;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && request.auth.uid == resource.data.uid;
+      allow delete: if false;
+    }
+  }
+}
