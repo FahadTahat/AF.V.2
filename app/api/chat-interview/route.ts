@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextResponse } from 'next/server';
 
 const CUSTOM_API = "https://viscodev.x10.mx/GPT-4/api.php";
