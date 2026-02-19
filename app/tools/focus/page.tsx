@@ -395,11 +395,30 @@ export default function FocusZonePage() {
 
     const handleFullscreen = () => {
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => { });
+            document.documentElement.requestFullscreen().catch(() => { });
         } else {
-            document.exitFullscreen().then(() => setIsFullscreen(false));
+            document.exitFullscreen();
         }
     }
+
+    // Sync isFullscreen state with real browser fullscreen events
+    useEffect(() => {
+        const onFSChange = () => {
+            const isFS = !!document.fullscreenElement
+            setIsFullscreen(isFS)
+            // Hide/show navbar by toggling body class
+            if (isFS) {
+                document.body.classList.add('fullscreen-focus-mode')
+            } else {
+                document.body.classList.remove('fullscreen-focus-mode')
+            }
+        }
+        document.addEventListener('fullscreenchange', onFSChange)
+        return () => {
+            document.removeEventListener('fullscreenchange', onFSChange)
+            document.body.classList.remove('fullscreen-focus-mode')
+        }
+    }, [])
 
     return (
         <AuthGate mode="block" title="سجّل دخولك لاستخدام منطقة التركيز" description="منطقة التركيز العميق متاحة فقط للمستخدمين المسجلين. سجّل دخولك للاستمتاع بمؤقت بومودورو والأصوات المحفزة.">
@@ -603,25 +622,26 @@ export default function FocusZonePage() {
                     </div>
                 </div>
 
-                {/* Exit Fullscreen Floating Button */}
+                {/* Exit Fullscreen Floating Button - always visible above everything */}
                 {isFullscreen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="fixed top-6 right-6 z-50 flex gap-4"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[99999] flex items-center gap-3"
                     >
-                        <div className="bg-black/50 backdrop-blur-lg px-6 py-2 rounded-full border border-white/10 text-white/80 font-mono text-sm hidden md:flex items-center gap-2">
+                        <div className="bg-black/70 backdrop-blur-xl px-5 py-3 rounded-full border border-white/20 text-white/90 font-mono text-sm flex items-center gap-3 shadow-2xl">
                             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                            وضع التركيز الكامل
+                            <span>وضع التركيز الكامل</span>
+                            <div className="w-px h-4 bg-white/20" />
+                            <button
+                                onClick={handleFullscreen}
+                                className="flex items-center gap-2 text-white/70 hover:text-white transition-colors group"
+                            >
+                                <Minimize size={16} className="group-hover:scale-110 transition-transform" />
+                                <span className="text-xs">خروج</span>
+                            </button>
+                            <kbd className="text-[10px] text-white/40 bg-white/10 px-2 py-0.5 rounded border border-white/10">ESC</kbd>
                         </div>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => { document.exitFullscreen(); setIsFullscreen(false); }}
-                            className="bg-black/50 backdrop-blur-lg rounded-full hover:bg-white/20 text-white border border-white/10 h-10 w-10"
-                        >
-                            <Minimize size={18} />
-                        </Button>
                     </motion.div>
                 )}
             </div>

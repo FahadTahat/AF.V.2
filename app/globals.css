@@ -884,3 +884,10 @@
     cursor: auto !important;
   }
 }
+
+/* --- Focus Zone Fullscreen Mode --- */
+/* Hide navbar when in fullscreen focus mode */
+body.fullscreen-focus-mode nav,
+body.fullscreen-focus-mode header {
+  display: none !important;
+}
