@@ -76,7 +76,6 @@ export default function VerifyEmailPage() {
             if (auth.currentUser && !auth.currentUser.emailVerified) {
                 await sendEmailVerification(auth.currentUser, {
                     url: `${window.location.origin}/auth/verify-email?email=${encodeURIComponent(email)}`,
-                    handleCodeInApp: true,
                 })
 
                 toast.success("تم إرسال رابط التحقق إلى بريدك الإلكتروني!")
@@ -113,7 +112,6 @@ export default function VerifyEmailPage() {
             setLoading(true)
             await sendEmailVerification(auth.currentUser, {
                 url: `${window.location.origin}/auth/verify-email?email=${encodeURIComponent(email)}`,
-                handleCodeInApp: true,
             })
 
             toast.success("تم إعادة إرسال رابط التحقق!")

@@ -73,7 +73,6 @@ export default function SignupPage() {
             if (auth.currentUser && !auth.currentUser.emailVerified) {
                 await sendEmailVerification(auth.currentUser, {
                     url: `${window.location.origin}/auth/verify-email?email=${encodeURIComponent(email)}`,
-                    handleCodeInApp: true,
                 })
                 toast.success("تم إنشاء حسابك! تم إرسال رابط التحقق إلى بريدك الإلكتروني 📧")
                 router.push('/auth/verify-email')
